@@ -1,6 +1,6 @@
 var estrutura = document.getElementById('body')
 var cont=0;
-
+var links = []
 const xhr = new XMLHttpRequest();
 
 xhr.open("GET", "https://api.github.com/users/GabrielKruger-IV2/repos")
@@ -29,13 +29,14 @@ xhr.onreadystatechange = function () {
                 <tr>
                     
                     <td id="tdLing"><p id="linguagem">Linguagem principal:${result[i].language}</p></td>
-                    <td class="tdA"><a href="${result[i].clone_url}" id="linkCline">Clonar</a></td>
+                    <td class="tdA"><button class="btn" onclick="copiar(${i})">Clonar</button></td>
                 </tr>
     
         
                 </table>
             </div>`;
         cont=1;
+        links[i] = result[i].clone_url;
     }else{
         estrutura.innerHTML += `    
         
@@ -52,7 +53,7 @@ xhr.onreadystatechange = function () {
             <tr>
                 
                 <td id="tdLing"><p id="linguagem">Linguagem principal:${result[i].language}</p></td>
-                <td class="tdA"><a href="${result[i].clone_url}" id="linkCline">Clonar</a></td>
+                <td class="tdA"><button class="btn" onclick="copiar(${i})">Clonar</button></td>
             </tr>
 
     
@@ -60,8 +61,22 @@ xhr.onreadystatechange = function () {
         </div>
     `;
         cont=0;
+        links[i] = result[i].clone_url;
         }
+
 
         }
     }
 }
+
+
+function copiar(e) {
+    const input= document.createElement("input");
+    input.value = links[e];
+    input.id = "input";
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    input.remove();
+    alert("Link copiado");
+  }
